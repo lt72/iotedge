@@ -1,29 +1,9 @@
-Azure IoT Edge Design
-=====================
+# Azure IoT Edge Design and Architecture
 
-Azure IoT
----------
+## Overall architecture
 
-Composition:
+![Architecture](./images/AzureIoTEdgeRuntime__architecture.png)
 
-- [Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/)
-- Azure IoT Edge
-  - EdgeDevice_1_of_n
-    - [EdgeRuntime](#edge-runtime)
-      - [Module Management Agent](#module-management-agent)
-      - [Edge Hub](#edge-hub)
-    - Modules
-      - Azure Functions
-      - Azure Streaming Analytics
-      - OPC UA
-      - [UserDefinedModule_1_of_n](#user-defined-modules)
-
-Architecture Diagram:
-
-![Azure IoT Architecture Diagram](./images/AzureIoTArchitecture.png)
-
-Edge Runtime
-------------
 
 The IoT Edge Runtime manages high-value services running on devices and enables communication between them. It allows workflows running on devices to be configured, deployed and monitored from the cloud - securely and at scale.
 

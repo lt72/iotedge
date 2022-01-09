@@ -1,0 +1,1 @@
+start java -jar c:\tools\plantuml\plantuml.jar -o "C:\src\iotedge\doc\md\images" -gui resources/

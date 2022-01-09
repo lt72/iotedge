@@ -1,0 +1,85 @@
+@startuml
+
+skinparam rectangle {
+    roundCorner<<Security Boundary>> 25
+	LineThickness<<Security Boundary>> 1
+	LineColor<<Security Boundary>> black
+	
+	
+    roundCorner<<Group>> 25
+	LineThickness<<Group>> 1
+	LineColor<<Group>> blue
+}
+
+title Azure IoT Edge runtime deployment diagram
+
+cloud Azure #line:blue;line.bold;text:black { 
+	node "Azure IoT Hub" as IoTHub #azure;line:blue;line.bold;text:black {
+	}
+}
+
+node "<<device>>\n:Linux or Windows OS" as host {
+  
+	rectangle "[admin privilege]" <<Security Boundary>> #line.dashed  {
+		package "Edge Native Runtime" #line:red;line.bold;text:black {
+			component "<<system service>>\n:Identity Service" as edged #pink;line:red;line.bold;text:black { 
+			}  
+			component "<<system process>>\n:Edge Agent" as EdgeAgent #pink;line:red;line.bold;text:black { 
+			}
+		}
+	}
+
+	rectangle "<<execution environment>>\n:OCI Images" as OCI #line:green;line.bold;text:black { 
+	
+		rectangle "[user privilege]" <<Security Boundary>> #line.dashed {
+			package "<<OCI image>>\n:Custom Workload 1" as CW1 #palegreen;line:green;line.bold;text:black
+			package "<<OCI image>>\n:Custom Workload 2" as CW2 #palegreen;line:green;line.bold;text:black
+			package "<<OCI image>>\n:Custom Workload ..." as CW... #palegreen;line:green;line.bold;text:black
+			package "<<OCI image>>\n:Custom Workload 49" as CW49 #palegreen;line:green;line.bold;text:black
+	
+			package "Edge Application Runtime" #line:red;line.bold;text:black {
+				component "<<OCI image>>\n:Edge Hub (Azure IoT Hub proxy)" as EdgeHub #pink;line:red;line.bold;text:black {  
+				}
+			}
+		}
+	}
+}
+
+rectangle "Indirectly Connected Devices" as Devices <<Group>> #line.dashed {
+
+	
+	node "<<device>>\n:Device 1" as Client1 {
+		package "<<execution environment>>\n:Device Application" as DeviceApp1 #palegreen;line:green;line.bold;text:black {
+			package "Azure IoT Device SDK" as SDK1 #palegreen;line:green;line.bold;text:black {
+			}
+			package "Custom application" as App1 #palegreen;line:green;line.bold;text:black {
+			}
+		}
+	}
+
+	node "<<device>>\n:Device 2" as Client2 {
+		package "<<execution environment>>\n:Device Application" as DeviceApp2 #palegreen;line:green;line.bold;text:black {
+			package "Azure IoT Device SDK" as SDK2 #palegreen;line:green;line.bold;text:black {
+			}
+			package "Custom application" as App2 #palegreen;line:green;line.bold;text:black {
+			}
+		}
+	}
+
+	node "<<device>>\n:Device n" as Clientn {
+		package "<<execution environment>>\n:Device Application" as DeviceAppn #palegreen;line:green;line.bold;text:black {
+			package "Azure IoT Device SDK" as SDKn #palegreen;line:green;line.bold;text:black {
+			}
+			package "Custom application" as App,,, #palegreen;line:green;line.bold;text:black {
+			}
+		}
+	}
+}
+
+
+EdgeHub <.do(0.> IoTHub : IoT Hub Device API for data and control plane [HTTP | AMQP | MQTT]
+SDK1 <-do(0-> EdgeHub : IoT Hub Device API for data and control plane [HTTP | AMQP | MQTT]
+SDKn <-do(0-> EdgeHub
+SDK2 <-do(0-> EdgeHub 
+
+@enduml
