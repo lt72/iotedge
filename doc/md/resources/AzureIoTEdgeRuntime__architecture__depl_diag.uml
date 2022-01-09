@@ -77,7 +77,7 @@ rectangle "Indirectly Connected Devices" as Devices <<Group>> #line.dashed {
 }
 
 
-EdgeHub <.do(0.> IoTHub : IoT Hub Device API for data and control plane [HTTP | AMQP | MQTT]
+EdgeHub <.[#red,dotted,thickness=8]do(0.> IoTHub : IoT Hub Device API for data and control plane [HTTP | AMQP | MQTT]
 SDK1 <-do(0-> EdgeHub : IoT Hub Device API for data and control plane [HTTP | AMQP | MQTT]
 SDKn <-do(0-> EdgeHub
 SDK2 <-do(0-> EdgeHub 
