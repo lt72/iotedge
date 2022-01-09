@@ -20,15 +20,6 @@ cloud Azure #line:blue;line.bold;text:black {
 
 node "<<device>>\n:Linux or Windows OS" as host {
   
-	rectangle "[admin privilege]" <<Security Boundary>> #line.dashed  {
-		package "Edge Native Runtime" #line:red;line.bold;text:black {
-			component "<<system service>>\n:Identity Service" as edged #pink;line:red;line.bold;text:black { 
-			}  
-			component "<<system process>>\n:Edge Agent" as EdgeAgent #pink;line:red;line.bold;text:black { 
-			}
-		}
-	}
-
 	rectangle "<<execution environment>>\n:OCI Images" as OCI #line:green;line.bold;text:black { 
 	
 		rectangle "[user privilege]" <<Security Boundary>> #line.dashed {
@@ -40,6 +31,15 @@ node "<<device>>\n:Linux or Windows OS" as host {
 			package "Edge Application Runtime" #line:red;line.bold;text:black {
 				component "<<OCI image>>\n:Edge Hub (Azure IoT Hub proxy)" as EdgeHub #pink;line:red;line.bold;text:black {  
 				}
+			}
+		}
+	}
+	
+	rectangle "[admin privilege]" <<Security Boundary>> #line.dashed  {
+		package "Edge Native Runtime" #line:red;line.bold;text:black {
+			component "<<system service>>\n:Identity Service" as edged #pink;line:red;line.bold;text:black { 
+			}  
+			component "<<system process>>\n:Edge Agent" as EdgeAgent #pink;line:red;line.bold;text:black { 
 			}
 		}
 	}
@@ -78,8 +78,14 @@ rectangle "Indirectly Connected Devices" as Devices <<Group>> #line.dashed {
 
 
 EdgeHub <.[#red,dotted,thickness=8]do(0.> IoTHub : IoT Hub Device API for data and control plane [HTTP | AMQP | MQTT]
+
 SDK1 <-do(0-> EdgeHub : IoT Hub Device API for data and control plane [HTTP | AMQP | MQTT]
 SDKn <-do(0-> EdgeHub
 SDK2 <-do(0-> EdgeHub 
+
+CW1 <-up(0-> EdgeHub
+CW2 <-up(0-> EdgeHub
+CW... <-up(0-> EdgeHub
+CW49 <-up(0-> EdgeHub
 
 @enduml
