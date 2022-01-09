@@ -25,7 +25,7 @@ Every Edge runtime component is represented in <TODO>. Every optional runtime co
 * For all major state transitions of runtime components and customer workloads, we will provide [state diagrams](https://en.wikipedia.org/wiki/State_diagram) to document those trnsitions.
 * For all interactions between Edge runtime components and other edge runtime components or customer workloads, we will provide at least one [sequence diagram](https://en.wikipedia.org/wiki/Sequence_diagram) to document those interactions, e.g., to illustrate which interfaces are involved in the interaction.
 
-## Documentation Index 
+## Index 
 
 1. [Azure IoT Edge Architecture](./md/AzureIoTEdgeRuntime__architecture.md)
    1. Deployment and component diagrams for all [Azure IoT Edge runtime components and customer workloads](./md/AzureIoTEdgeRuntime__components_and_workloads.md) 
