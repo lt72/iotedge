@@ -5,7 +5,6 @@ skinparam rectangle {
 	LineThickness<<Security Boundary>> 1
 	LineColor<<Security Boundary>> black
 	
-	
     roundCorner<<Group>> 25
 	LineThickness<<Group>> 1
 	LineColor<<Group>> blue
@@ -37,11 +36,14 @@ node "<<device>>\n:Linux or Windows OS" as host {
 	
 	rectangle "[admin privilege]" <<Security Boundary>> #line.dashed  {
 		package "Edge Native Runtime" #line:red;line.bold;text:black {
-			component "<<system service>>\n:Identity Service" as edged #pink;line:red;line.bold;text:black { 
+			component "<<system service>>\n:Identity Service" as EdgeD #pink;line:red;line.bold;text:black { 
 			}  
 			component "<<system process>>\n:Edge Agent" as EdgeAgent #pink;line:red;line.bold;text:black { 
 			}
 		}
+	}
+	
+	component "Container Engine (Moby)" as ContainerEngine #line:black;line.bold;text:black {
 	}
 }
 
@@ -88,4 +90,8 @@ CW2 <-up(0-> EdgeHub
 CW... <-up(0-> EdgeHub
 CW49 <-up(0-> EdgeHub
 
+EdgeAgent <-(0)-> EdgeD
+EdgeAgent -(0)-> ContainerEngine
+
+ContainerEngine -[#black]up-> OCI 
 @enduml
