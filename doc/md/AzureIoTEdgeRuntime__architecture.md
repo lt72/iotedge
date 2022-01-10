@@ -5,7 +5,8 @@
 ![Architecture](./images/AzureIoTEdgeRuntime__architecture__depl_diag.png)
 
 
-The IoT Edge Runtime manages high-value services running on devices and enables communication between them. It allows workflows running on devices to be configured, deployed and monitored from the cloud - securely and at scale.
+The IoT Edge Runtime manages high-value services running on devices and enables communication between them. It allows workflows running on devices to be configured, deployed and monitored from the cloud, securely and at scale. 
+<TODO: add further test to illustrate the architecture diagram>
 
 ## Index 
 
