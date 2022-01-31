@@ -48,11 +48,19 @@ node "<<device>>\n:Linux or Windows OS" as host {
 }
 
 rectangle "Indirectly Connected Devices" as Devices <<Group>> #line.dashed {
-	node "<<device>>\n:Device 1" as Client {
-		package "<<execution environment>>\n:Device Application" #palegreen;line:green;line.bold;text:black {
-			package "Azure IoT Device SDK" #palegreen;line:green;line.bold;text:black {
+	node "<<device>>\n:Device ..." as Device... {
+		package "<<execution environment>>\n:Device Application ..." #palegreen;line:green;line.bold;text:black {
+			package "Azure IoT Device SDK" as SDK... #palegreen;line:green;line.bold;text:black {
 			}
-			package "Custom application" #palegreen;line:green;line.bold;text:black {
+			package "Custom application" as CustomApp2 #palegreen;line:green;line.bold;text:black {
+			}
+		}
+	}
+	node "<<device>>\n:Device 1" as Device1 {
+		package "<<execution environment>>\n:Device Application 1" #palegreen;line:green;line.bold;text:black {
+			package "Azure IoT Device SDK" as SDK1 #palegreen;line:green;line.bold;text:black {
+			}
+			package "Custom application" as CustomApp1 #palegreen;line:green;line.bold;text:black {
 			}
 		}
 	}
@@ -63,7 +71,8 @@ rectangle "Indirectly Connected Devices" as Devices <<Group>> #line.dashed {
 
 EdgeHub <.[#red,dotted,thickness=8]do.> IoTHub
 
-Client <--> host
+Device1 <--> host
+Device... <--> host
 
 CW1 <-up-> ApplicationRuntime
 CW... <-up-> ApplicationRuntime
