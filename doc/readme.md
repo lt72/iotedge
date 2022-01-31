@@ -27,8 +27,8 @@ Every Edge runtime component is represented in red. Every optional runtime compo
 
 ## Index 
 
-1. [Azure IoT Edge Architecture](./md/AzureIoTEdgeRuntime__architecture.md)
-   1. Deployment and component diagrams for all [Azure IoT Edge runtime components and customer workloads](./md/AzureIoTEdgeRuntime__components_and_workloads.md) 
+1. [Azure IoT Edge Deployment](./md/AzureIoTEdgeRuntime__architecture.md)
+   1. Component diagrams for all [Azure IoT Edge runtime components and customer workloads](./md/AzureIoTEdgeRuntime__components_and_workloads.md) 
    2. Runtime [bootstrap sequence](./md/AzureIoTEdgeRuntime__bootstrap.md)
    3. Customer [workloads interaction with Edge runtime](./md/AzureIoTEdgeRuntime__runtime_and_workloads_interactions.md)
    4. Edge as a [gateway](./md/AzureIoTEdgeRuntime__gateway.md)
