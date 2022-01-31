@@ -13,32 +13,53 @@ cloud Azure #line:blue;line.bold;text:black {
 }
 
 '
-' Edge
+' Edge device
 '
 
 OCI -- [Container Engine]
 
-package "Edge Native Runtime" as NativeRuntime #line:red;line.bold;text:black { 
-	
-	package SecuritySubSystem {
-		IS - [Identity Service] 
-		CS - [Certificate Service] 
-		KS - [Key Service] 
+frame "Azure IoT Edge v1.2 Runtime" <<group>> as EdgeRuntime {
+	package "Edge Native Runtime" as NativeRuntime #line:red;line.bold;text:black { 
+		
+		package SecuritySubSystem {
+			IS - [Identity Service] 
+			CS - [Certificate Service] 
+			KS - [Key Service] 
+		}
+		
+		Management -- [Edgelet] 
+		Workload -- [Edgelet] 
+		
+		Metrics -- [Edge Agent] 
 	}
-	
-	Management -- [Edgelet] 
-	Workload -- [Edgelet] 
-	
-	Metrics -- [Edge Agent] 
+	rectangle "OCI Images" <<execution environment>> as OCIExec #line:darkgreen;line.bold;text:black { 
+		package "Edge Application Runtime" as ApplicationRuntime #line:red;line.bold;text:black {
+			IoTHubDeviceAPI -- [Edge Hub]
+			EdgeHub -- [Edge Hub]
+			EdgeRoutesScopesSync -- [Edge Hub]
+		}
+		package "Custom Workload 1" as CW1 #palegreen;line:green;line.bold;text:black
+		package "Custom Workload ..." as CW... #palegreen;line:green;line.bold;text:black
+	}
 }
-rectangle "OCI Images" <<execution environment>> as OCIExec #line:darkgreen;line.bold;text:black { 
-	package "Edge Application Runtime" as ApplicationRuntime #line:red;line.bold;text:black {
-		IoTHubDeviceAPI -- [Edge Hub]
-		EdgeHub -- [Edge Hub]
-		EdgeRoutesScopesSync -- [Edge Hub]
+
+'
+' Indirectly connected devices
+'
+
+frame "Indirectly Connected Devices" <<group>> as Devices #line.dashed {
+	package "Device Application ..." <<execution environment>> #palegreen;line:green;line.bold;text:black {
+		package "Azure IoT Device SDK" as SDK... #palegreen;line:green;line.bold;text:black {
+		}
+		package "Custom application" as CustomApp2 #palegreen;line:green;line.bold;text:black {
+		}
 	}
-	package "Custom Workload 1" as CW1 #palegreen;line:green;line.bold;text:black
-	package "Custom Workload ..." as CW... #palegreen;line:green;line.bold;text:black
+	package "Device Application 1" <<execution environment>> #palegreen;line:green;line.bold;text:black {
+		package "Azure IoT Device SDK" as SDK1 #palegreen;line:green;line.bold;text:black {
+		}
+		package "Custom application" as CustomApp1 #palegreen;line:green;line.bold;text:black {
+		}
+	}
 }
 
 
@@ -49,37 +70,40 @@ rectangle "OCI Images" <<execution environment>> as OCIExec #line:darkgreen;line
 '
 ' Security Sub-System
 '
-[Identity Service] --> [CS] : IPC
-[Identity Service] --> [KS] : IPC
-[Certificate Service] --> [KS] : IPC
+[Identity Service] --> [CS] : HTTPs/UDS
+[Identity Service] --> [KS] : HTTPs/UDS
+[Certificate Service] --> [KS] : HTTPs/UDS
 
-[Edgelet] --> IS : IPC
-[Edgelet] --> CS : IPC
-[Edgelet] --> KS : IPC
+[Edgelet] --> IS : HTTPs/UDS
+[Edgelet] --> CS : HTTPs/UDS
+[Edgelet] --> KS : HTTPs/UDS
 
 '
 ' Container Engine
 '
-[Edgelet] -up-> OCI : HTTP
+[Edgelet] -up-> OCI : HTTP(Auth?)
 [Container Engine]  -up-> OCIExec
 
 '
 ' Edge Runtime
 '
-[Edge Agent] --> Workload : IPC
-[Edge Agent] --> Management : IPC
+[Edge Agent] --> Workload : HTTPs/UDS
+[Edge Agent] --> Management : HTTPs/UDS
 
 [Edge Agent] .[#red,dotted,thickness=8]do.> Deployment : HTTP
 [Edge Agent] <.[#red,dotted,thickness=8]do.> Twin : HTTP
 
-[Edge Hub] --> Workload : HTTP
-[Edge Hub] --> RoutesScopesSync : HTTP
+[Edge Hub] --> Workload : HTTPs
+[Edge Hub] --> RoutesScopesSync : HTTPs
 
 '
 ' User
 '
-CW1 --> IoTHubDeviceAPI : [AMQP|HTTP|MQTT]
-CW... --> IoTHubDeviceAPI : [AMQP|HTTP|MQTT]
+CW1 --> IoTHubDeviceAPI : [AMQP|HTTPs|MQTT]
+CW... --> IoTHubDeviceAPI : [AMQP|HTTPs|MQTT]
+
+SDK1 --> IoTHubDeviceAPI : [AMQP|HTTPs|MQTT]
+SDK... --> IoTHubDeviceAPI : [AMQP|HTTPs|MQTT]
 
 '
 ' Look & feel

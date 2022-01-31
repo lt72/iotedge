@@ -1,23 +1,5 @@
 @startuml
 
-skinparam rectangle {
-    roundCorner<<security boundary>> 25
-	LineThickness<<security boundary>> 1
-	LineColor<<security boundary>> black
-	
-    roundCorner<<execution environment>> 25
-	
-    roundCorner<<group>> 25
-	LineThickness<<group>> 1
-	LineColor<<group>> blue
-
-	LineThickness<<device>> 1
-	
-	LineThickness<<system service>> 1
-	
-	LineThickness<<system process>> 1
-}
-
 ' title Azure IoT Edge runtime deployment diagram
 
 
@@ -107,5 +89,27 @@ CW... <-up-> ApplicationRuntime
 NativeRuntime -do-> ContainerEngine
 
 ContainerEngine -[#black]up-> OCI 
+
+'
+' Look & feel
+'
+
+skinparam rectangle {
+    roundCorner<<security boundary>> 25
+	LineThickness<<security boundary>> 1
+	LineColor<<security boundary>> black
+	
+    roundCorner<<execution environment>> 25
+	
+    roundCorner<<group>> 25
+	LineThickness<<group>> 1
+	LineColor<<group>> blue
+
+	LineThickness<<device>> 1
+	
+	LineThickness<<system service>> 1
+	
+	LineThickness<<system process>> 1
+}
 
 @enduml
