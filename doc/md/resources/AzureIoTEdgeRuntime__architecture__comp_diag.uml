@@ -1,0 +1,94 @@
+@startuml
+
+' title Azure IoT Edge runtime components diagram
+
+
+'
+' Cloud
+'
+cloud Azure #line:blue;line.bold;text:black { 
+	Deployment -le- [Azure IoT Hub] 
+	Twin -ri- [Azure IoT Hub] 
+	RoutesScopesSync -do- [Azure IoT Hub] 
+}
+
+'
+' Edge
+'
+
+OCI -- [Container Engine]
+
+package "Edge Native Runtime" as NativeRuntime #line:red;line.bold;text:black { 
+	
+	package SecuritySubSystem {
+		IS - [Identity Service] 
+		CS - [Certificate Service] 
+		KS - [Key Service] 
+	}
+	
+	Management -- [Edgelet] 
+	Workload -- [Edgelet] 
+	
+	Metrics -- [Edge Agent] 
+}
+rectangle "OCI Images" <<execution environment>> as OCIExec #line:darkgreen;line.bold;text:black { 
+	package "Edge Application Runtime" as ApplicationRuntime #line:red;line.bold;text:black {
+		Telemetry -- [Edge Hub]
+		EdgeHub -- [Edge Hub]
+		EdgeRoutesScopesSync -- [Edge Hub]
+	}
+	package "Custom Workload 1" as CW1 #palegreen;line:green;line.bold;text:black
+	package "Custom Workload ..." as CW... #palegreen;line:green;line.bold;text:black
+}
+
+
+'
+' Interactions
+'
+
+'
+' Security Sub-System
+'
+[Identity Service] -[#black]-> [CS] : IPC
+[Identity Service] --> [KS] : IPC
+[Certificate Service] --> [KS] : IPC
+
+[Edgelet] --> IS : IPC
+[Edgelet] --> CS : IPC
+[Edgelet] --> KS : IPC
+
+'
+' Container Engine
+'
+[Edgelet] -up-> OCI : HTTP
+[Container Engine]  -up-> OCIExec
+
+'
+' Edge Runtime
+'
+[Edge Agent] --> Workload : IPC
+[Edge Agent] --> Management : IPC
+
+[Edge Agent] .[#red,dotted,thickness=8]do.> Deployment : HTTP
+[Edge Agent] <.[#red,dotted,thickness=8]do.> Twin : HTTP
+
+[Edge Hub] --> Workload : HTTP
+[Edge Hub] --> RoutesScopesSync : HTTP
+
+'
+' User
+'
+CW1 --> Telemetry
+CW... --> Telemetry
+
+'
+' Look & feel
+'
+skinparam rectangle {
+    roundCorner<<execution environment>> 25
+	LineThickness<<security boundary>> 1
+	LineColor<<security boundary>> black
+}
+
+
+@enduml
