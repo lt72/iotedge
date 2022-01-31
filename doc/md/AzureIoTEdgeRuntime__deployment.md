@@ -8,7 +8,7 @@ The IoT Edge Runtime manages high-value services running on devices and enables 
 
 ## Index 
 
-1. Component diagrams for all [Azure IoT Edge runtime components and customer workloads](./AzureIoTEdgeRuntime__components_and_workloads.md) 
+1. Component diagrams for all [Azure IoT Edge runtime components and workloads](./AzureIoTEdgeRuntime__components_and_workloads.md) 
 2. Runtime [bootstrap sequence](./AzureIoTEdgeRuntime__bootstrap.md)
 3. Customer [workloads interaction with Edge runtime](./AzureIoTEdgeRuntime__runtime_and_workloads_interactions.md)
 4. Edge as a [gateway](./AzureIoTEdgeRuntime__gateway.md)
