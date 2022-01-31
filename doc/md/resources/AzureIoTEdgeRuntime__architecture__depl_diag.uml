@@ -12,6 +12,10 @@ skinparam rectangle {
 	LineColor<<group>> blue
 
 	LineThickness<<device>> 1
+	
+	LineThickness<<system service>> 1
+	
+	LineThickness<<system process>> 1
 }
 
 ' title Azure IoT Edge runtime deployment diagram
@@ -48,13 +52,13 @@ frame "Azure IoT Edge v1.2 Deployment Diagram" {
 				package "Edge Native Runtime" as NativeRuntime #line:red;line.bold;text:black {
 					component "<<system service>>\n:Identity Service" as IS #pink;line:red;line.bold;text:black { 
 					}  
-					component "<<system service>>\n:Certificate Service" as CS #pink;line:red;line.bold;text:black { 
+					component "Certificate Service" <<system service>> as CS #pink;line:red;line.bold;text:black { 
 					}  
-					component "<<system service>>\n:Key Service" as KS #pink;line:red;line.bold;text:black { 
+					component "Key Service" <<system service>> as KS #pink;line:red;line.bold;text:black { 
 					}  
-					component "<<system process>>\n:Edgelet" as EdgeD #pink;line:red;line.bold;text:black { 
+					component "Edgelet" <<system service>> as EdgeD #pink;line:red;line.bold;text:black { 
 					}
-					component "<<system process>>\n:Edge Agent" as EdgeAgent #pink;line:red;line.bold;text:black { 
+					component "Edge Agent" <<system process>> as EdgeAgent #pink;line:red;line.bold;text:black { 
 					}
 				}		
 				component "Container Engine (Moby)" as ContainerEngine #line:black;line.bold;text:black {
