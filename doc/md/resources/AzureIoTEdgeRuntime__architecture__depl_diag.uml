@@ -2,13 +2,16 @@
 
 skinparam rectangle {
     roundCorner<<security boundary>> 25
-    roundCorner<<execution environment>> 25
 	LineThickness<<security boundary>> 1
 	LineColor<<security boundary>> black
 	
-    roundCorner<<Group>> 25
-	LineThickness<<Group>> 1
-	LineColor<<Group>> blue
+    roundCorner<<execution environment>> 25
+	
+    roundCorner<<group>> 25
+	LineThickness<<group>> 1
+	LineColor<<group>> blue
+
+	LineThickness<<device>> 1
 }
 
 ' title Azure IoT Edge runtime deployment diagram
@@ -27,7 +30,7 @@ cloud Azure #line:blue;line.bold;text:black {
 ' Edge runtime
 '
 frame "Azure IoT Edge v1.2 Deployment Diagram" {
-	node "<<device>>\n:Linux or Windows OS" as host {
+	node "Linux or Windows OS" <<device>> as host {
 		rectangle "OCI Images" <<execution environment>> as OCI #line:darkgreen;line.bold;text:black { 
 			rectangle "[user privilege]" <<security boundary>> #line.dashed {
 				package "Custom Workload 1" as CW1 #palegreen;line:green;line.bold;text:black
@@ -65,7 +68,7 @@ frame "Azure IoT Edge v1.2 Deployment Diagram" {
 	'
 
 	rectangle "Indirectly Connected Devices" as Devices <<Group>> #line.dashed {
-		node "<<device>>\n:Device ..." as Device... {
+		node "Device ..." <<device>> as Device... {
 			package "Device Application ..." <<execution environment>> #palegreen;line:green;line.bold;text:black {
 				package "Azure IoT Device SDK" as SDK... #palegreen;line:green;line.bold;text:black {
 				}
@@ -73,7 +76,7 @@ frame "Azure IoT Edge v1.2 Deployment Diagram" {
 				}
 			}
 		}
-		node "<<device>>\n:Device 1" as Device1 {
+		node "Device 1" <<device>> as Device1 {
 			package "Device Application 1" <<execution environment>> #palegreen;line:green;line.bold;text:black {
 				package "Azure IoT Device SDK" as SDK1 #palegreen;line:green;line.bold;text:black {
 				}
