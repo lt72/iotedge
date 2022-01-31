@@ -1,6 +1,6 @@
 # Azure IoT Edge runtime components and customer workloads
 
-## Azure IoT Edge Physical Deployment
+## Azure IoT Edge components and their interactions
 
-![Architecture](./images/AzureIoTEdgeRuntime__architecture__depl_diag.png)
+![Component Diagram](./images/AzureIoTEdgeRuntime__architecture__comp_diag.png)
 
