@@ -4,7 +4,7 @@
 
 The IoT Edge Runtime manages high-value services running on devices and enables communication between them. It allows workflows running on devices to be configured, deployed and monitored from the cloud, securely and at scale. 
 
-<TODO: add further test to illustrate the architecture diagram>
+<TODO: add further test to illustrate the architecture diagram and how components are deployed>
 
 ## Index 
 
