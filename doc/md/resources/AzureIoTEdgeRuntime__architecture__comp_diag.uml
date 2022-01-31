@@ -33,7 +33,7 @@ package "Edge Native Runtime" as NativeRuntime #line:red;line.bold;text:black {
 }
 rectangle "OCI Images" <<execution environment>> as OCIExec #line:darkgreen;line.bold;text:black { 
 	package "Edge Application Runtime" as ApplicationRuntime #line:red;line.bold;text:black {
-		Telemetry -- [Edge Hub]
+		IoTHubDeviceAPI -- [Edge Hub]
 		EdgeHub -- [Edge Hub]
 		EdgeRoutesScopesSync -- [Edge Hub]
 	}
@@ -49,7 +49,7 @@ rectangle "OCI Images" <<execution environment>> as OCIExec #line:darkgreen;line
 '
 ' Security Sub-System
 '
-[Identity Service] -[#black]-> [CS] : IPC
+[Identity Service] --> [CS] : IPC
 [Identity Service] --> [KS] : IPC
 [Certificate Service] --> [KS] : IPC
 
@@ -78,8 +78,8 @@ rectangle "OCI Images" <<execution environment>> as OCIExec #line:darkgreen;line
 '
 ' User
 '
-CW1 --> Telemetry
-CW... --> Telemetry
+CW1 --> IoTHubDeviceAPI : [AMQP|HTTP|MQTT]
+CW... --> IoTHubDeviceAPI : [AMQP|HTTP|MQTT]
 
 '
 ' Look & feel
