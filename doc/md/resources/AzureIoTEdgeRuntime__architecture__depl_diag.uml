@@ -12,62 +12,82 @@ skinparam rectangle {
 
 ' title Azure IoT Edge runtime deployment diagram
 
+
+'
+' Cloud
+'
 cloud Azure #line:blue;line.bold;text:black { 
 	node "Azure IoT Hub" as IoTHub #azure;line:blue;line.bold;text:black {
 	}
 }
 
+
+'
+' Edge runtime
+'
 frame "Azure IoT Edge v1.2 Deployment Diagram" {
+	node "<<device>>\n:Linux or Windows OS" as host {
+		rectangle "<<execution environment>>\n:OCI Images" as OCI #line:darkgreen;line.bold;text:black { 
+			rectangle "[user privilege]" <<Security Boundary>> #line.dashed {
+				package "<<OCI image>>\n:Custom Workload 1" as CW1 #palegreen;line:green;line.bold;text:black
+				package "<<OCI image>>\n:Custom Workload ..." as CW... #palegreen;line:green;line.bold;text:black
+		
+				package "Edge Application Runtime" as ApplicationRuntime #line:red;line.bold;text:black {
+					component "<<OCI image>>\n:Edge Hub (Azure IoT Hub proxy)" as EdgeHub #pink;line:red;line.bold;text:black {  
+					}
+				}
+			}
+		}
+		
+		rectangle "<<execution environment>>\n:Native Processes" #line:blue;line.bold;text:black { 
+			rectangle "[admin privilege]" <<Security Boundary>> #line.dashed  {
+				package "Edge Native Runtime" as NativeRuntime #line:red;line.bold;text:black {
+					component "<<system service>>\n:Identity Service" as IS #pink;line:red;line.bold;text:black { 
+					}  
+					component "<<system service>>\n:Certificate Service" as CS #pink;line:red;line.bold;text:black { 
+					}  
+					component "<<system service>>\n:Key Service" as KS #pink;line:red;line.bold;text:black { 
+					}  
+					component "<<system process>>\n:Edgelet" as EdgeD #pink;line:red;line.bold;text:black { 
+					}
+					component "<<system process>>\n:Edge Agent" as EdgeAgent #pink;line:red;line.bold;text:black { 
+					}
+				}
+			}
+		}
+		
+		component "Container Engine (Moby)" as ContainerEngine #line:black;line.bold;text:black {
+		}
+	}
 
-node "<<device>>\n:Linux or Windows OS" as host {
-	rectangle "<<execution environment>>\n:OCI Images" as OCI #line:green;line.bold;text:black { 
-		rectangle "[user privilege]" <<Security Boundary>> #line.dashed {
-			package "<<OCI image>>\n:Custom Workload 1" as CW1 #palegreen;line:green;line.bold;text:black
-			package "<<OCI image>>\n:Custom Workload ..." as CW... #palegreen;line:green;line.bold;text:black
-	
-			package "Edge Application Runtime" as ApplicationRuntime #line:red;line.bold;text:black {
-				component "<<OCI image>>\n:Edge Hub (Azure IoT Hub proxy)" as EdgeHub #pink;line:red;line.bold;text:black {  
+	'
+	' Indirectly connected devices
+	'
+
+	rectangle "Indirectly Connected Devices" as Devices <<Group>> #line.dashed {
+		node "<<device>>\n:Device ..." as Device... {
+			package "<<execution environment>>\n:Device Application ..." #palegreen;line:green;line.bold;text:black {
+				package "Azure IoT Device SDK" as SDK... #palegreen;line:green;line.bold;text:black {
+				}
+				package "Custom application" as CustomApp2 #palegreen;line:green;line.bold;text:black {
+				}
+			}
+		}
+		node "<<device>>\n:Device 1" as Device1 {
+			package "<<execution environment>>\n:Device Application 1" #palegreen;line:green;line.bold;text:black {
+				package "Azure IoT Device SDK" as SDK1 #palegreen;line:green;line.bold;text:black {
+				}
+				package "Custom application" as CustomApp1 #palegreen;line:green;line.bold;text:black {
 				}
 			}
 		}
 	}
-	
-	rectangle "<<execution environment>>\n:Native Processes" #line:green;line.bold;text:black { 
-		rectangle "[admin privilege]" <<Security Boundary>> #line.dashed  {
-			package "Edge Native Runtime" as NativeRuntime #line:red;line.bold;text:black {
-				component "<<system service>>\n:Identity Service" as EdgeD #pink;line:red;line.bold;text:black { 
-				}  
-				component "<<system process>>\n:Edge Agent" as EdgeAgent #pink;line:red;line.bold;text:black { 
-				}
-			}
-		}
-	}
-	
-	component "Container Engine (Moby)" as ContainerEngine #line:black;line.bold;text:black {
-	}
 }
 
-rectangle "Indirectly Connected Devices" as Devices <<Group>> #line.dashed {
-	node "<<device>>\n:Device ..." as Device... {
-		package "<<execution environment>>\n:Device Application ..." #palegreen;line:green;line.bold;text:black {
-			package "Azure IoT Device SDK" as SDK... #palegreen;line:green;line.bold;text:black {
-			}
-			package "Custom application" as CustomApp2 #palegreen;line:green;line.bold;text:black {
-			}
-		}
-	}
-	node "<<device>>\n:Device 1" as Device1 {
-		package "<<execution environment>>\n:Device Application 1" #palegreen;line:green;line.bold;text:black {
-			package "Azure IoT Device SDK" as SDK1 #palegreen;line:green;line.bold;text:black {
-			}
-			package "Custom application" as CustomApp1 #palegreen;line:green;line.bold;text:black {
-			}
-		}
-	}
-}
 
-}
-
+'
+' Connections
+'
 
 EdgeHub <.[#red,dotted,thickness=8]do.> IoTHub
 
