@@ -67,7 +67,7 @@ frame "Azure IoT Edge v1.2 Deployment Diagram" {
 	' Indirectly connected devices
 	'
 
-	rectangle "Indirectly Connected Devices" as Devices <<Group>> #line.dashed {
+	rectangle "Indirectly Connected Devices" <<group>> as Devices #line.dashed {
 		node "Device ..." <<device>> as Device... {
 			package "Device Application ..." <<execution environment>> #palegreen;line:green;line.bold;text:black {
 				package "Azure IoT Device SDK" as SDK... #palegreen;line:green;line.bold;text:black {
