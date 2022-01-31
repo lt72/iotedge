@@ -29,7 +29,7 @@ cloud Azure #line:blue;line.bold;text:black {
 '
 ' Edge runtime
 '
-frame "Azure IoT Edge v1.2 Deployment Diagram" {
+frame "Azure IoT Edge v1.2 Deployment Diagram1" {
 	node "Linux or Windows OS" <<device>> as host {
 		rectangle "OCI Images" <<execution environment>> as OCI #line:darkgreen;line.bold;text:black { 
 			rectangle "[user privilege]" <<security boundary>> #line.dashed {
