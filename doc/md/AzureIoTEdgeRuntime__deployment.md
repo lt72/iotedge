@@ -4,8 +4,6 @@ The IoT Edge Runtime manages workloads on Edge devices and satellite devices con
 
 ## Physical Entities 
 ![Deployment](./images/AzureIoTEdgeRuntime__architecture__depl_diag.png)
-|:--:|
-| Fig. 1 - Azure IoT Edge Deployment|
 
 ### Edge Runtime  
 The Azure IoT Edge runtime is implemented as a collection of independent services that can be deployed to either Windows or Linux operating systems. Please see <LINK TO SUPORTED PLATFORM> for a full list of supported platforms. 
