@@ -1,5 +1,5 @@
 
-# Azure IoT Edge Design and Architecture
+# Azure IoT Edge Architecture and Operational Experience
 
 
 These documentation pages describe the design principles, architecture and operational experience for [Azure IoT Edge](https://azure.microsoft.com/en-us/services/iot-edge/). 
