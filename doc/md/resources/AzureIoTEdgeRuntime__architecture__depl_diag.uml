@@ -19,8 +19,8 @@ frame "Azure IoT Edge v1.2 Deployment Diagram" {
 	node "Linux or Windows OS" <<device>> as host {
 		rectangle "OCI Images" <<execution environment>> as OCI #line:darkgreen;line.bold;text:black { 
 			rectangle "[user privilege]" <<security boundary>> #line.dashed {
-				package "Custom Workload 1" as CW1 #palegreen;line:green;line.bold;text:black
-				package "Custom Workload ..." as CW... #palegreen;line:green;line.bold;text:black
+				package "User Workload 1" as CW1 #palegreen;line:green;line.bold;text:black
+				package "User Workload ..." as CW... #palegreen;line:green;line.bold;text:black
 		
 				package "Edge Application Runtime" as ApplicationRuntime #line:red;line.bold;text:black {
 					component "Edge Hub (Azure IoT Hub proxy)" as EdgeHub #pink;line:red;line.bold;text:black {  
@@ -58,7 +58,7 @@ frame "Azure IoT Edge v1.2 Deployment Diagram" {
 			package "Device Application ..." <<execution environment>> #palegreen;line:green;line.bold;text:black {
 				package "Azure IoT Device SDK" as SDK... #palegreen;line:green;line.bold;text:black {
 				}
-				package "Custom application" as CustomApp2 #palegreen;line:green;line.bold;text:black {
+				package "User Application" as UserApp2 #palegreen;line:green;line.bold;text:black {
 				}
 			}
 		}
@@ -66,7 +66,7 @@ frame "Azure IoT Edge v1.2 Deployment Diagram" {
 			package "Device Application 1" <<execution environment>> #palegreen;line:green;line.bold;text:black {
 				package "Azure IoT Device SDK" as SDK1 #palegreen;line:green;line.bold;text:black {
 				}
-				package "Custom application" as CustomApp1 #palegreen;line:green;line.bold;text:black {
+				package "User Application" as UserApp1 #palegreen;line:green;line.bold;text:black {
 				}
 			}
 		}
