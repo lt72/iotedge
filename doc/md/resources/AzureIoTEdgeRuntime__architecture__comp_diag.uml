@@ -7,9 +7,8 @@
 ' Cloud
 '
 cloud Azure #line:blue;line.bold;text:black { 
-	Deployment -le- [Azure IoT Hub] 
-	Twin -ri- [Azure IoT Hub] 
-	RoutesScopesSync -do- [Azure IoT Hub] 
+	IoTHubDeviceAPI -- [Azure IoT Hub] 
+	DeviceScopeSyncAPI -- [Azure IoT Hub] 
 }
 
 '
@@ -27,19 +26,26 @@ frame "Azure IoT Edge v1.2 Runtime" <<group>> as EdgeRuntime {
 			KS - [Key Service] 
 		}
 		
-		Management -- [Edgelet] 
-		Workload -- [Edgelet] 
-		
-		Metrics -- [Edge Agent] 
+		Management -- [edged] 
+		Workload -- [edged] 			
 	}
 	rectangle "OCI Images" <<execution environment>> as OCIExec #line:darkgreen;line.bold;text:black { 
 		package "Edge Application Runtime" as ApplicationRuntime #line:red;line.bold;text:black {
-			IoTHubDeviceAPI -- [Edge Hub]
-			EdgeHub -- [Edge Hub]
-			EdgeRoutesScopesSync -- [Edge Hub]
+			EdgeAgentMetrics -- [Edge Agent] 
+
+			EdgeHubDeviceAPI -- [Edge Hub]
+			EdgeHubMetrics -- [Edge Hub]
+			EdgeDeviceScopeSyncAPI -- [Edge Hub]
 		}
-		package "Custom Workload 1" as CW1 #palegreen;line:green;line.bold;text:black
-		package "Custom Workload ..." as CW... #palegreen;line:green;line.bold;text:black
+		package "Custom Workload 1" as CW1 #palegreen;line:green;line.bold;text:black {
+			package "Azure IoT Device SDK" as MSDK... #palegreen;line:green;line.bold;text:black {
+			}
+		}
+
+		package "Custom Workload ..." as CW... #palegreen;line:green;line.bold;text:black {
+			package "Azure IoT Device SDK" as MSDK #palegreen;line:green;line.bold;text:black {
+			}	
+		}
 	}
 }
 
@@ -49,16 +55,12 @@ frame "Azure IoT Edge v1.2 Runtime" <<group>> as EdgeRuntime {
 
 frame "Indirectly Connected Devices" <<group>> as Devices #line.dashed {
 	package "Device Application ..." <<execution environment>> #palegreen;line:green;line.bold;text:black {
-		package "Azure IoT Device SDK" as SDK... #palegreen;line:green;line.bold;text:black {
-		}
-		package "Custom application" as CustomApp2 #palegreen;line:green;line.bold;text:black {
-		}
+		package "Azure IoT Device SDK" as DSDK... #palegreen;line:green;line.bold;text:black {
+		}		
 	}
 	package "Device Application 1" <<execution environment>> #palegreen;line:green;line.bold;text:black {
-		package "Azure IoT Device SDK" as SDK1 #palegreen;line:green;line.bold;text:black {
-		}
-		package "Custom application" as CustomApp1 #palegreen;line:green;line.bold;text:black {
-		}
+		package "Azure IoT Device SDK" as DSDK1 #palegreen;line:green;line.bold;text:black {
+		}		
 	}
 }
 
@@ -70,40 +72,40 @@ frame "Indirectly Connected Devices" <<group>> as Devices #line.dashed {
 '
 ' Security Sub-System
 '
-[Identity Service] --> [CS] : HTTPs/UDS
-[Identity Service] --> [KS] : HTTPs/UDS
-[Certificate Service] --> [KS] : HTTPs/UDS
+[Identity Service] --> [CS] : HTTP/UDS
+[Identity Service] --> [KS] : HTTP/UDS
+[Certificate Service] --> [KS] : HTTP/UDS
 
-[Edgelet] --> IS : HTTPs/UDS
-[Edgelet] --> CS : HTTPs/UDS
-[Edgelet] --> KS : HTTPs/UDS
+[edged] --> IS : HTTP/UDS
+[edged] --> CS : HTTP/UDS
+[edged] --> KS : HTTP/UDS
 
 '
 ' Container Engine
 '
-[Edgelet] -up-> OCI : HTTP(Auth?)
+[edged] -up-> OCI : HTTP/UDS
 [Container Engine]  -up-> OCIExec
 
 '
 ' Edge Runtime
 '
-[Edge Agent] --> Workload : HTTPs/UDS
-[Edge Agent] --> Management : HTTPs/UDS
+[Edge Agent] --> Workload : HTTP/UDS
+[Edge Agent] --> Management : HTTP/UDS
 
-[Edge Agent] .[#red,dotted,thickness=8]do.> Deployment : HTTP
-[Edge Agent] <.[#red,dotted,thickness=8]do.> Twin : HTTP
+[Edge Agent] .[#red,dotted,thickness=8]do.> IoTHubDeviceAPI : AMQPs/MQTTs
+[Edge Hub] <.[#red,dotted,thickness=8]do.> IoTHubDeviceAPI : AMQPs/MQTTs
 
-[Edge Hub] --> Workload : HTTPs
-[Edge Hub] --> RoutesScopesSync : HTTPs
+[Edge Hub] --> Workload : HTTP/UDS
+[Edge Hub] --> DeviceScopeSyncAPI : HTTPs
 
 '
 ' User
 '
-CW1 --> IoTHubDeviceAPI : [AMQP|HTTPs|MQTT]
-CW... --> IoTHubDeviceAPI : [AMQP|HTTPs|MQTT]
+MSDK1 --> EdgeHubDeviceAPI : [AMQPs|HTTPs|MQTTs]
+MSDK... --> EdgeHubDeviceAPI : [AMQPs|HTTPs|MQTTs]
 
-SDK1 --> IoTHubDeviceAPI : [AMQP|HTTPs|MQTT]
-SDK... --> IoTHubDeviceAPI : [AMQP|HTTPs|MQTT]
+DSDK1 --> EdgeHubDeviceAPI : [AMQPs|MQTTs]
+DSDK... --> EdgeHubDeviceAPI : [AMQPs|MQTTs]
 
 '
 ' Look & feel
