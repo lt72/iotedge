@@ -1,5 +1,4 @@
 @startuml
-
 ' title Azure IoT Edge runtime deployment diagram
 
 
@@ -23,7 +22,9 @@ frame "Azure IoT Edge v1.2 Deployment Diagram" {
 				package "User Workload ..." as CW... #palegreen;line:green;line.bold;text:black
 		
 				package "Edge Application Runtime" as ApplicationRuntime #line:red;line.bold;text:black {
-					component "Edge Hub (Azure IoT Hub proxy)" as EdgeHub #pink;line:red;line.bold;text:black {  
+					component "Edge Hub" as EdgeHub #pink;line:red;line.bold;text:black {  
+					}
+					component "Edge Agent" as EdgeAgent #pink;line:red;line.bold;text:black { 
 					}
 				}
 			}
@@ -32,15 +33,13 @@ frame "Azure IoT Edge v1.2 Deployment Diagram" {
 		rectangle "Native Processes" <<execution environment>> #line:blue;line.bold;text:black { 
 			rectangle "[admin privilege]" <<security boundary>> #line.dashed  {
 				package "Edge Native Runtime" as NativeRuntime #line:red;line.bold;text:black {
-					component "<<system service>>\n:Identity Service" as IS #pink;line:red;line.bold;text:black { 
+					component "Identity Service" <<system service>> as IS #pink;line:red;line.bold;text:black { 
 					}  
 					component "Certificate Service" <<system service>> as CS #pink;line:red;line.bold;text:black { 
 					}  
 					component "Key Service" <<system service>> as KS #pink;line:red;line.bold;text:black { 
 					}  
-					component "Edgelet" <<system service>> as EdgeD #pink;line:red;line.bold;text:black { 
-					}
-					component "Edge Agent" <<system process>> as EdgeAgent #pink;line:red;line.bold;text:black { 
+					component "iotedged" <<system service>> as EdgeD #pink;line:red;line.bold;text:black { 
 					}
 				}		
 				component "Container Engine (Moby)" as ContainerEngine #line:black;line.bold;text:black {
@@ -83,12 +82,14 @@ EdgeHub <.[#red,dotted,thickness=8]do.> IoTHub
 Device1 <--> host
 Device... <--> host
 
-CW1 <-up-> ApplicationRuntime
-CW... <-up-> ApplicationRuntime
+CW1 <-up-> EdgeHub
+CW... <-up-> EdgeHub
 
 NativeRuntime -do-> ContainerEngine
 
 ContainerEngine -[#black]up-> OCI 
+
+OCI -do-> NativeRuntime
 
 '
 ' Look & feel
@@ -111,5 +112,4 @@ skinparam rectangle {
 	
 	LineThickness<<system process>> 1
 }
-
 @enduml
